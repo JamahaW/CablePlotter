@@ -49,3 +49,8 @@ class TrackBar(UIEntity):
 
     def set(self, value: int) -> None:
         cv2.setTrackbarPos(self.getName(), self.__window.getName(), value)
+
+
+class CheckBox(TrackBar):
+    def __init__(self, window: Window, name: str, /):
+        super().__init__(window, name, 0, 1)
