@@ -9,6 +9,7 @@ from numpy.typing import NDArray
 def displayImageFile(filename: PathLike | str):
     img = loadImage(filename)
     pyplot.imshow(img)
+    pyplot.show()
 
 
 def loadImage(filename: PathLike | str) -> NDArray[uint8]:
