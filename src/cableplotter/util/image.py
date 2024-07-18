@@ -8,8 +8,8 @@ from numpy import zeros
 type Image = ndarray[uint8]
 
 
-def readImageRGB(filename: PathLike | str, /) -> Image:
-    return cv2.cvtColor(cv2.imread(filename, cv2.IMREAD_COLOR), cv2.COLOR_BGR2RGB)
+def readImageBGR(filename: PathLike | str, /) -> Image:
+    return cv2.imread(filename, cv2.IMREAD_COLOR)
 
 
 def saveImageRGB(filename: PathLike | str, image: Image, /) -> None:

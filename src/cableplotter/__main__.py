@@ -1,45 +1,34 @@
 from pathlib import Path
-from typing import Callable
 
-from matplotlib import pyplot
-from matplotlib.axes import Axes
-from matplotlib.widgets import Slider
+import cv2
 
+from cableplotter.ui import TrackBar
+from cableplotter.ui import Window
 from cableplotter.util.image import getContourImage
-from cableplotter.util.image import readImageRGB
-
-
-def createSlider(label: str, axes: Axes, callback: Callable[[float], None]) -> Slider:
-    ret = Slider(
-        axes,
-        label=label,
-        valmin=0,
-        valmax=255,
-        valinit=128,
-        valfmt='%1.0f'
-    )
-    ret.on_changed(callback)
-    return ret
+from cableplotter.util.image import readImageBGR
 
 
 def main():
     base_folder = Path("./data")
-    in_folder = base_folder / "in"
-    out_folder = base_folder / "out"
 
-    img = readImageRGB(in_folder / "test_image.png")
+    image = readImageBGR(f"{base_folder / "in" / "cat.png"}")
 
-    slider = createSlider("level", pyplot.axes((0.05, 0.25, 0.85, 0.04)), print)
+    # height, width, colors = image.shape
 
-    image = getContourImage(img)
-    height, width, colors = image.shape
-    pyplot.title(f"view {width=}, {height=}, {colors=}")
+    window = Window("main")
 
-    pyplot.imshow(image)
+    bar = TrackBar(window, "bar", 0, 255)
 
-    pyplot.show()
+    while True:
 
-    # imageSaveRGB(out_folder / "out_image.png", img)
+        temp = getContourImage(image, bar.get())
+
+        window.show(temp)
+
+        if cv2.waitKey(1) == ord('q'):
+            break
+
+    Window.destroyAll()
 
 
 if __name__ == '__main__':
